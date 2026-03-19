@@ -2,12 +2,11 @@
 
 
 CheckForUpdate() {
-    temppath := A_WinDir . "\temp\checkVersion.txt"
+    temppath := A_WinDir . "\Temp\scriptConfig.ini"
 
-    Download "https://raw.githubusercontent.com/LebTeb/Phosimp-Tools/refs/heads/main/external/versionnum.txt", temppath
+    Download "https://raw.githubusercontent.com/LebTeb/Phosimp-Tools/refs/heads/main/scriptConfig.ini", temppath
 
-    checkedVersionStr := Trim(FileRead(temppath), "`r`n ")
-    checkedVersion := checkedVersionStr + 0
+    checkedVersion := IniRead(temppath, "scriptConf", "scriptVersion")
 
     if checkedVersion < version {
         MsgBox("What the hey! Did you change the version number >:(")
@@ -27,10 +26,10 @@ CheckForUpdate() {
 
 
 
-
+; runs on launch
 try {
-    versionStr := Trim(FileRead("external\versionnum.txt"), "`r`n ")
-    version := versionStr + 0 
+    version := IniRead("scriptConfig.ini", "scriptConf", "scriptVersion")
+    ;version := versionStr + 0 
 } catch Error as e {
     MsgBox("Running dev version")
 }

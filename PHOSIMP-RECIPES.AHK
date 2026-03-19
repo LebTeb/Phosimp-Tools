@@ -9,15 +9,21 @@
 #Include config.ahk
 #Include external\segment\segmentpic.ahk
 
-windowName := "[ AVAILABLE ON STEAM : @KanjiCoder's : PHO-SIMP ]"
+windowName := IniRead("userConfig.ini", "userConf", "windowName")
 
 slow_filters := [17,18,19] ;; make into seperate file?
 
-; get updated filter list
-Download "https://raw.githubusercontent.com/LebTeb/Phosimp-Tools/refs/heads/main/external/totalfilters.txt", A_WinDir . "\Temp\totalfilters.txt"
-totalFiltersStr := Trim(FileRead(A_WinDir . "\Temp\totalfilters.txt"), "`r`n ")
-totalFilters := totalFiltersStr
-FileDelete(A_WinDir . "\Temp\totalfilters.txt")
+; gets updated filter list if set to check for it
+if (IniRead("scriptConfig.ini", "scriptConf", "checkFilterAmount") = true ){
+    Download "https://raw.githubusercontent.com/LebTeb/Phosimp-Tools/refs/heads/main/scriptConfig.ini", A_WinDir . "\Temp\scriptConfig.ini"
+    totalFiltersUpdate := IniRead((A_WinDir . "\Temp\scriptConfig.ini"), "scriptConf", "totalFilters")
+    IniWrite(totalFiltersUpdate, "scriptConfig.ini", "scriptConf", "totalFilters")
+    totalFilters := IniRead("scriptConfig.ini", "scriptConf", "totalFilters")
+    FileDelete(A_WinDir . "\Temp\scriptConfig.ini")
+} else {
+    totalFilters := IniRead("scriptConfig.ini", "scriptConf", "totalFilters")
+}
+
 
 recipeDir := A_ScriptDir "\recipes\"
 if (recipe_dir_override) {
@@ -26,7 +32,12 @@ if (recipe_dir_override) {
 
 PhosimpDir := GetPhosimpPath()
 if (PhosimpDir = "") {
-    PhosimpDir := DirSelect(,,"Select PHOSIMP installation folder")
+    if (IniRead("userConfig.ini", "userConf", "programDir") = "") {
+        PhosimpDir := DirSelect(,,"Select PHOSIMP installation folder")
+        IniWrite(PhosimpDir, "userConfig.ini", "userConf", "programDir")
+    } else {
+        PhosimpDir := IniRead("userConfig.ini", "userConf", "programDir")
+    }
 }
 if (PhosimpDir = "") {
     MsgBox "PHOSIMP directory not selected or found."
@@ -369,7 +380,7 @@ refreshRecipes(*) {
     }
     ddl.Add(recipes)  
 }
-     
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;VIDEO SCRIPT ENTRY
 
