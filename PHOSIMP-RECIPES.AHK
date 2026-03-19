@@ -11,7 +11,10 @@
 
 windowName := "[ AVAILABLE ON STEAM : @KanjiCoder's : PHO-SIMP ]"
 
-slow_filters := [17,18,19]
+slow_filters := [17,18,19] ;; make into seperate file?
+
+; get updated filter list
+;Download "", 
 
 recipeDir := A_ScriptDir "\recipes\"
 if (recipe_dir_override) {
@@ -140,9 +143,8 @@ AddRecipe(*) {
 Tabs.UseTab("Info")                                                                     ;;INFO TAB
 {
 MyGui.AddText(,"PHOSIMP - KANJICODER")
-MyGui.Add("Link",, '<a href="https://tinyurl.com/PHOSIMP">tinyurl.com/PHOSIMP</a>')
-MyGui.Add("Link",, '<a href="https://store.steampowered.com/app/3721650/PHOSIMP/">PHOSIMP on Steam</a>')
-MyGui.AddText(,"This recipe program made by bokkbokk :)")
+MyGui.Add("Link",, 'PHOSIMP on <a href="https://store.steampowered.com/app/3721650/PHOSIMP/">Steam</a>, <a href="https://tinyurl.com/PHOSIMP">Discord</a>')
+MyGui.Add("Link",, 'Original script made by <a href="https://github.com/bokkbokk">bokkbokk</a>, continued by <a href="https://github.com/LebTeb">Leb</a> :3')
 MyGui.AddText("w300 +Wrap","Hotkeys:")
 MyGui.AddText("w300 +Wrap","Control + Alt + T: Apply selected recipe")
 MyGui.AddText("w300 +Wrap","Control + Alt + R: Randomly select a recipe and apply it (hold down?)")
