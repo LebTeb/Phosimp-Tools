@@ -13,7 +13,6 @@ CheckForUpdate() {
         MsgBox("What the hey! Did you change the version number >:(")
     }
     if checkedVersion > version {
-        ;MsgBox("New version available!")
         Result := MsgBox("New version available! Would you like to download it?",, "YesNo")
         if Result = "Yes"
             Run "https://github.com/LebTeb/Phosimp-Tools/archive/refs/heads/main.zip"
@@ -30,7 +29,7 @@ CheckForUpdate() {
 
 
 try {
-   versionStr := Trim(FileRead("external\versionnum.txt"), "`r`n ")
+    versionStr := Trim(FileRead("external\versionnum.txt"), "`r`n ")
     version := versionStr + 0 
 } catch Error as e {
     MsgBox("Running dev version")

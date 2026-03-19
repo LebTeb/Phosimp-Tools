@@ -14,7 +14,10 @@ windowName := "[ AVAILABLE ON STEAM : @KanjiCoder's : PHO-SIMP ]"
 slow_filters := [17,18,19] ;; make into seperate file?
 
 ; get updated filter list
-;Download "", 
+Download "https://raw.githubusercontent.com/LebTeb/Phosimp-Tools/refs/heads/main/external/totalfilters.txt", A_WinDir . "\Temp\totalfilters.txt"
+totalFiltersStr := Trim(FileRead(A_WinDir . "\Temp\totalfilters.txt"), "`r`n ")
+totalFilters := totalFiltersStr
+FileDelete(A_WinDir . "\Temp\totalfilters.txt")
 
 recipeDir := A_ScriptDir "\recipes\"
 if (recipe_dir_override) {
@@ -175,7 +178,7 @@ RunAllFilters(*) {
         MsgBox "PHOSIMP window not found. Please open PHOSIMP first."
         return
     }
-    Loop 604 {
+    Loop totalFilters {
         SendInput(A_Index)
         SendInput("{Enter}")
         
@@ -192,7 +195,7 @@ CrashFinder1(*) {
         MsgBox "PHOSIMP window not found. Please open PHOSIMP first."
         return
     }
-    Loop 604 {
+    Loop 2 {
         SendInput(A_Index)
         SendInput("{Enter}")
         SendInput(A_Index)
@@ -430,7 +433,7 @@ applyRecipe(recipe) {
 }
 
 ^!r:: {
-    randNum := Random(1, 420)
+    randNum := Random(1, totalFilters)
     SendInput(randNum)
     SendInput("{Enter}")
 }
