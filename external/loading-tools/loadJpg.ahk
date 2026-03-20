@@ -32,7 +32,7 @@ PadColor := color . "@" . alpha
     RunWait A_ComSpec ' /c ' Cmd, , "Hide" ;;;do the ffmpeg
     
     try {
-        WinActivate("[ AVAILABLE ON STEAM : @KanjiCoder's : PHO-SIMP ]")
+        WinActivate(windowName)
     } catch Error as e {
         MsgBox "PHOSIMP window not found. Please open PHOSIMP first." ;;or remove this trycatch if its not working even when phosimp is open
         return

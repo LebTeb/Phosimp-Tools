@@ -183,18 +183,16 @@ Tabs.UseTab("Extras")
 AllBtn := MyGui.AddButton("Default w80", "Run Every Filter in order")
 AllBtn.OnEvent("Click", RunAllFilters)
 RunAllFilters(*) {
-    try {
-        WinActivate(windowName)
-    } catch Error as e {
+    if WinExist(windowName) {
+        WinActivate windowName
+        Loop totalFilters {
+            ControlSend A_Index "{enter}",, windowName
+        }
+    }
+    else {
         MsgBox "PHOSIMP window not found. Please open PHOSIMP first."
         return
     }
-    Loop totalFilters {
-        SendInput(A_Index)
-        SendInput("{Enter}")
-        
-    }
-
 }
 
 CrashBtn := MyGui.AddButton("Default w80", "Crash Finder?") ;;;; crashfinder (LOAD WITH A PURE WHITE IMG OR PURE BLACK)
@@ -223,20 +221,32 @@ dontStopMakeItPopDJBlowMySpeakersUpTonightImaFightTillWeSeeTheSunLight := true
 CrashBtn2 := MyGui.AddButton("Default w80", "Crash Finder2 (Random Spam)") ;;;crashfinder inverted in the beginning 
 CrashBtn2.OnEvent("Click", CrashFinder2)
 CrashFinder2(*) {
-    global dontStopMakeItPopDJBlowMySpeakersUpTonightImaFightTillWeSeeTheSunLight
-    try {
-        WinActivate(windowName)
-    } catch Error as e {
-        MsgBox "PHOSIMP window not found. Please open PHOSIMP first."
+    result := MsgBox("This is laggy, press Ctrl Alt S to stop. Would you like to continue?",, "YesNo")
+    if result = "Yes"{
+        global dontStopMakeItPopDJBlowMySpeakersUpTonightImaFightTillWeSeeTheSunLight
+        if WinExist(windowName) {
+            WinActivate windowName
+            try {
+                while dontStopMakeItPopDJBlowMySpeakersUpTonightImaFightTillWeSeeTheSunLight {
+                    ControlSend (Random(1, totalFilters) "{Enter}"),, windowName
+                    Sleep(10)
+                }
+            } catch {
+                MsgBox "Phosimp Crashed!"
+                return
+            } 
+        }
+        else {
+            MsgBox "PHOSIMP window not found. Please open PHOSIMP first."
+            return
+        }
+    }
+    else {
         return
     }
+
+
     
-    while dontStopMakeItPopDJBlowMySpeakersUpTonightImaFightTillWeSeeTheSunLight {
-        randNum := Random(1, 604)
-        SendInput(randNum)
-        SendInput("{Enter}")
-        Sleep(10)
-    }
 
 }
 ^!s:: {
