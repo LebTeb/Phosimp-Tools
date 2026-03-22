@@ -1,5 +1,22 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Force
+phosimp := "[ AVAILABLE ON STEAM : @KanjiCoder's : PHO-SIMP ]"
+save := "[_SAVE_PHOSIMP_PNG_]"
+
+ControlSend "4{enter}s{enter}",, phosimp
+WinWait save
+;msgbox "exists"
+sleep 1000
+;WinActivate save
+WinActivate "ahk_exe KANJI_CODER.PHO_SIMP.EXE"
+;ControlSend "test",, 
+sleep 2000
+ControlSend "yay", "Edit1"
+;send "yay"
+
+ExitApp
+
+
 
 ; ControlSend "4{enter}s{enter}",, "[ AVAILABLE ON STEAM : @KanjiCoder's : PHO-SIMP ]"
 ; WinWait "[_SAVE_PHOSIMP_PNG_]"
@@ -10,6 +27,7 @@
 ; ControlSend "17",, "[ AVAILABLE ON STEAM : @KanjiCoder's : PHO-SIMP ]"
 ; ExitApp
 
+/*
 Run "Notepad",, "Min", &PID  ; Run Notepad minimized.
 WinWait "ahk_pid " PID  ; Wait for it to appear.
 ; Send the text to the inactive Notepad edit control.
@@ -21,7 +39,9 @@ Winwait "Save As"
 sleep 1000
 ControlSend "yay",, "Save As"
 
-ExitApp
+ExitApp*/
 
 ;Msgbox "Press OK to activate the window to see the result."
 ;WinActivate "ahk_pid " PID  ; Show the result.
+
+

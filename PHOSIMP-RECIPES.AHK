@@ -195,6 +195,8 @@ RunAllFilters(*) {
     }
 }
 
+
+/*
 CrashBtn := MyGui.AddButton("Default w80", "Crash Finder?") ;;;; crashfinder (LOAD WITH A PURE WHITE IMG OR PURE BLACK)
 CrashBtn.OnEvent("Click", CrashFinder1)
 CrashFinder1(*) {
@@ -215,6 +217,8 @@ CrashFinder1(*) {
         SendInput("{Enter}")
     }
 }
+*/
+
 
 dontStopMakeItPopDJBlowMySpeakersUpTonightImaFightTillWeSeeTheSunLight := true
 
@@ -438,9 +442,11 @@ applyRecipe(recipe) {
     onlynum := "\d+"
     try {
         Loop Read recipeDir . recipe {                                               ;;MAIN APPLY HOTKEY
-            if RegExMatch(A_LoopReadLine, onlynum, &m) {
-                SendInput(m[])       ; numbers found         NOTE FOR ME TOMMOROW: RUN THROUGH PHOSIMP TO FIND ALL FILTERS THAT HAVE A IMPACTFUL DELAY, THEN USE THAT TO ADD MORE DELAY IN VIDEO MAKING SCRIPT, AND ALSO FIGURE OUT HOW TO DO THAT ONLY FOR VIDEO SCRIPT SINCE NOW BOTH USE THE SAME FUNCTION? PERHAPS A SHITTY IF STATEMENT AND A VARIABLE, MAYBE ACTUALLY THERES A A_ VARIABLE FOR THAT
-                SendInput("{Enter}")
+            if RegExMatch(A_LoopReadLine, onlynum, &m) 
+                {
+                ControlSend (m[] "{Enter}"),, windowName
+                ;SendInput(m[])       ; numbers found         NOTE FOR ME TOMMOROW: RUN THROUGH PHOSIMP TO FIND ALL FILTERS THAT HAVE A IMPACTFUL DELAY, THEN USE THAT TO ADD MORE DELAY IN VIDEO MAKING SCRIPT, AND ALSO FIGURE OUT HOW TO DO THAT ONLY FOR VIDEO SCRIPT SINCE NOW BOTH USE THE SAME FUNCTION? PERHAPS A SHITTY IF STATEMENT AND A VARIABLE, MAYBE ACTUALLY THERES A A_ VARIABLE FOR THAT
+                ;SendInput("{Enter}")
                 if (m[] == 17) {
                     Sleep 1000
                 }
@@ -455,8 +461,13 @@ applyRecipe(recipe) {
 
 ^!r:: {
     randNum := Random(1, totalFilters)
-    SendInput(randNum)
-    SendInput("{Enter}")
+    try {
+        ControlSend (randNum "{Enter}"),, windowName
+    }
+    catch {
+        MsgBox "PHOSIMP not found !"
+        return
+    }
 }
 
 
@@ -467,7 +478,17 @@ PngPath := A_WinDir . "\temp\temp_png.png"
 PhotoUrl := "https://picsum.photos/512" 
 
 ^!p:: {
-    
+    try {
+        WinActivate(windowName)
+    } catch Error as e {
+        MsgBox "PHOSIMP window not found. Please open PHOSIMP first."
+        return
+    }
+    ToolTip "Downloading Image"
+    /* ; !!! only use this if u use an actual check for ffmpeg converting instead of waiting 50ms!!
+    if FileExist(PngPath) {
+        FileDelete(PngPath)
+    }*/
     if GetKeyState("Ralt", "P") {
         PhotoUrl := "https://picsum.photos/512?grayscale"
     } else {
@@ -485,19 +506,12 @@ PhotoUrl := "https://picsum.photos/512"
     RunWait A_ComSpec ' /c ' Cmd, , "Hide" ;;;do the ffmpeg
     Sleep(50)   ; wait for ffmpeg to finish processing                                           ;;;;;;;;;;THIS TOO
     FileDelete(JpgPath) ; remove the temp file
-    try {
-        WinActivate(windowName)
-    } catch Error as e {
-        MsgBox "PHOSIMP window not found. Please open PHOSIMP first."
-        return
-    }
-    SendInput("l")
-    SendInput("{Enter}")
+    ControlSend "l {Enter}",, windowName
     Sleep(1000)                                                                               ;;;;ALL THE SLEEPS
     SendInput(PngPath)
     Sleep(900)                                                                              ;;;;TWEAK THIS IF NEEDED                                               
     SendInput("{Enter}")
-
+    ToolTip
 }
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;LOAD RANDOM IMAGE AHK 
