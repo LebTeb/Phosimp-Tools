@@ -33,15 +33,16 @@ if (recipe_dir_override) {
 PhosimpDir := GetPhosimpPath()
 if (PhosimpDir = "") {
     if (IniRead("userConfig.ini", "userConf", "programDir") = "") {
+        MsgBox "PHOSIMP directory not selected or found."
         PhosimpDir := DirSelect(,,"Select PHOSIMP installation folder")
         IniWrite(PhosimpDir, "userConfig.ini", "userConf", "programDir")
     } else {
         PhosimpDir := IniRead("userConfig.ini", "userConf", "programDir")
     }
 }
-if (PhosimpDir = "") {
-    MsgBox "PHOSIMP directory not selected or found."
-}
+;if (PhosimpDir = "") {
+;    MsgBox "PHOSIMP directory not selected or found."
+;}
 
 ; get recipes from the folder
 recipes := Array()
