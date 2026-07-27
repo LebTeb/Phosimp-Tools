@@ -359,15 +359,25 @@ LaunchPHOSIMPnoRec(*) {
 
 GetPhosimpPath() {
     readeded := RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Valve\Steam", "InstallPath", "")
-    if RegRead = "" {
+    if readeded = "" {
         if (IniRead("userConfig.ini", "userConf", "programDir") = "") {
-            MsgBox "PHOSIMP directory not selected or found."
+            MsgBox "Steam not found. Please select the PHOSIMP directory."
             PhosimpDir := DirSelect(,,"Select PHOSIMP installation folder")
-            IniWrite(PhosimpDir, "userConfig.ini", "userConf", "programDir")
+            if FileExist(PhosimpDir "\KANJI_CODER.PHO_SIMP.EXE") {
+                IniWrite(PhosimpDir, "userConfig.ini", "userConf", "programDir")
+                return PhosimpDir
+            } else {
+                MsgBox ("Phosimp not found in directory.")
+            }
         } else {
             PhosimpDir := IniRead("userConfig.ini", "userConf", "programDir")
+            if FileExist(PhosimpDir "\KANJI_CODER.PHO_SIMP.EXE") {
+                MsgBox("Using custom directory in userConfig.ini")
+                return PhosimpDir
+            } else {
+                MsgBox ("Phosimp not found in directory.")
+            }
         }
-        return
     }
 
     steamPath := readeded
@@ -376,7 +386,7 @@ GetPhosimpPath() {
         return commonPath
     }
 
-    MsgBox "PHOSIMP not found in default Steam directory."
+    ;MsgBox "PHOSIMP not found in default Steam directory."
     return ""
 }
 
